@@ -12,8 +12,6 @@ git clone https://github.com/dannyvolkaerts/2526_Data_Science.git
 cd 2526_Data_Science
 ```
 
-*Replace `yourusername` with the actual GitHub username/organization name.*
-
 ### 2. Create a Virtual Environment
 
 Create a Python virtual environment to isolate project dependencies:
