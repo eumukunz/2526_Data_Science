@@ -8,7 +8,7 @@ if not os.path.exists(data_dir):
 
 # Download the flight prices dataset
 kaggle.api.dataset_download_files(
-    'dilwong/flightprices', 
+    'dilwong/flightprices',
     path=data_dir, 
     unzip=True
 )

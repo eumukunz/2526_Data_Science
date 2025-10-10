@@ -7,6 +7,10 @@ Follow these steps to set up the repository on your local machine:
 
 ### 1. Clone the Repository
 
+**Where to execute these commands in Positron:**
+- Go to `Terminal` → `New Terminal` from the menu, or
+- Use `View` → `Terminal`
+
 ```bash
 git clone https://github.com/dannyvolkaerts/2526_Data_Science.git
 cd 2526_Data_Science
@@ -45,6 +49,20 @@ Once the virtual environment is activated, install the required packages:
 
 ```bash
 pip install -r requirements.txt
+```
+
+#### Updating Dependencies
+
+If you add new packages, update `requirements.txt` with:
+
+```bash
+pip freeze > requirements.txt
+```
+#### Update venv from requirements.txt
+To update your virtual environment with any changes made to `requirements.txt`, run:
+
+```bash
+pip install -r requirements.txt --upgrade
 ```
 
 ### 5. Verify Installation

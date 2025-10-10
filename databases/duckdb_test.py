@@ -1,3 +1,4 @@
+#%%
 import duckdb
 import pandas as pd
 
@@ -8,7 +9,7 @@ conn = duckdb.connect()
 result = conn.execute("SELECT COUNT(*) FROM 'data/itineraries.csv'").fetchone()
 
 print(f"Number of rows in itineraries.csv: {result[0]}")
-
+#%%
 # Query to get the top 5 rows and convert to DataFrame
 df = conn.execute("SELECT * FROM 'data/itineraries.csv' LIMIT 5").df()
 
