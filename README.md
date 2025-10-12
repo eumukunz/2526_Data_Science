@@ -8,6 +8,7 @@ Follow these steps to set up the repository on your local machine:
 ### 1. Clone the Repository
 
 **Where to execute these commands in Positron:**
+- Press `Ctrl + `` (backtick) to open the integrated terminal, or
 - Go to `Terminal` → `New Terminal` from the menu, or
 - Use `View` → `Terminal`
 
@@ -15,6 +16,8 @@ Follow these steps to set up the repository on your local machine:
 git clone https://github.com/dannyvolkaerts/2526_Data_Science.git
 cd 2526_Data_Science
 ```
+
+*Note: If you're already viewing this README in Positron, you've likely already cloned the repository and can skip this step.*
 
 ### 2. Create a Virtual Environment
 
@@ -51,30 +54,216 @@ Once the virtual environment is activated, install the required packages:
 pip install -r requirements.txt
 ```
 
-#### Updating Dependencies
-
-If you add new packages, update `requirements.txt` with:
-
+*Note: If `requirements.txt` doesn't exist yet, you can create it by installing packages manually and then generating it with:*
 ```bash
 pip freeze > requirements.txt
 ```
-#### Update venv from requirements.txt
-To update your virtual environment with any changes made to `requirements.txt`, run:
+
+### 5. Set Up Environment Variables
+
+Create a `.env` file in the root directory to store sensitive configuration data:
 
 ```bash
-pip install -r requirements.txt --upgrade
+# Create the .env file (Windows Command Prompt)
+echo. > .env
+
+# Or using PowerShell
+New-Item -Path ".env" -ItemType File
 ```
 
-### 5. Verify Installation
+### 6. Verify Installation
 
 You should see `(venv)` at the beginning of your command prompt, indicating the virtual environment is active. You can now start working with the project!
 
-### 6. Deactivating the Virtual Environment
+### Deactivating the Virtual Environment
 
 When you're done working on the project, deactivate the virtual environment:
 
 ```bash
 deactivate
+```
+
+## R Environment Management with renv
+
+For R projects, this repository uses the `renv` package to manage package dependencies and create reproducible environments.
+
+### What is renv?
+
+`renv` is R's dependency management tool that creates isolated, portable, and reproducible environments for R projects. It's similar to Python's virtual environments but designed specifically for R.
+
+**Key Benefits:**
+- **Isolation**: Each project has its own private package library
+- **Reproducibility**: Lock file ensures everyone uses the same package versions
+- **Portability**: Easy to share and collaborate on projects
+- **Restoration**: Quickly recreate the exact environment on any machine
+
+### Setting up renv
+
+#### 1. Install renv (if not already installed)
+
+Open R or Positron and run:
+
+```r
+# Install renv from CRAN
+install.packages("renv")
+```
+
+#### 2. Initialize renv in your project
+
+Navigate to your project directory in R and initialize renv:
+
+```r
+# Initialize renv in the current project
+renv::init()
+```
+
+This will:
+- Create a private package library for your project
+- Create an `renv.lock` file recording package versions
+- Create an `.Rprofile` file to automatically activate renv
+- Create an `renv/` directory with project settings
+
+#### 3. Install packages in the renv environment
+
+Install packages as you normally would:
+
+```r
+# Install packages - they'll go to the project-specific library
+install.packages(c("tidyverse", "ggplot2", "dplyr", "readr"))
+install.packages(c("rmarkdown", "knitr", "plotly"))
+
+# For data science packages
+install.packages(c("caret", "randomForest", "e1071"))
+```
+
+#### 4. Snapshot your environment
+
+After installing packages, create a snapshot:
+
+```r
+# Save the current state of your project library
+renv::snapshot()
+```
+
+This updates the `renv.lock` file with current package versions.
+
+### Working with renv
+
+#### Restore an environment
+
+When someone else (or you on another machine) opens the project:
+
+```r
+# Restore packages from renv.lock
+renv::restore()
+```
+
+#### Check project status
+
+```r
+# Check if packages are in sync with renv.lock
+renv::status()
+```
+
+#### Update packages
+
+```r
+# Update a specific package
+renv::install("ggplot2")
+
+# Update all packages to latest versions
+renv::update()
+
+# Snapshot after updates
+renv::snapshot()
+```
+
+#### Remove packages
+
+```r
+# Remove a package
+renv::remove("package_name")
+
+# Clean up unused packages
+renv::clean()
+```
+
+### renv Workflow
+
+Here's a typical workflow when working with renv:
+
+```r
+# 1. Open your R project (renv activates automatically)
+# 2. Install new packages as needed
+install.packages("new_package")
+
+# 3. Work on your analysis/code
+# Your R scripts here...
+
+# 4. Before committing changes, snapshot your environment
+renv::status()  # Check what's changed
+renv::snapshot()  # Save current state
+
+# 5. Commit both your code AND renv.lock to version control
+```
+
+### Important renv Files
+
+## Next Steps
+
+- Open the project in your preferred IDE (VS Code, PyCharm, Positron, etc.)
+- For R projects, ensure renv is initialized and packages are restored
+- For Python projects, activate the virtual environment and install dependencies
+- Set up your `.env` file with any required API keys or configuration values
+- Start exploring the course content and exercises
+- Remember to activate the appropriate environment each time you work on the projectg code
+4. **Use `renv::restore()` when joining a project** - Sets up the exact environment
+5. **Document package purposes** - Add comments about why packages are needed
+
+### Common renv Commands
+
+```r
+# Project management
+renv::init()          # Initialize renv in project
+renv::activate()      # Activate renv (usually automatic)
+renv::deactivate()    # Deactivate renv
+
+# Package management
+renv::install()       # Install packages
+renv::remove()        # Remove packages
+renv::update()        # Update packages
+renv::restore()       # Restore from lockfile
+renv::snapshot()      # Save current state
+
+# Status and diagnostics
+renv::status()        # Check project status
+renv::diagnostics()   # Detailed system info
+renv::dependencies()  # List project dependencies
+```
+
+### Troubleshooting renv
+
+**Problem: Package installation fails**
+```r
+# Try installing from different sources
+renv::install("package_name", repos = "https://cran.rstudio.com/")
+
+# Or force reinstall
+renv::install("package_name", force = TRUE)
+```
+
+**Problem: Environment seems broken**
+```r
+# Rebuild the environment from scratch
+renv::restore(clean = TRUE)
+```
+
+**Problem: renv not activating**
+```r
+# Manually activate
+renv::activate()
+
+# Check if .Rprofile exists and contains renv activation code
 ```
 
 ## Working with Environment Variables (.env file)

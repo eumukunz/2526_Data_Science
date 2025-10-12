@@ -1,3 +1,4 @@
+#%%
 import pandas as pd
 from ydata_profiling import ProfileReport
 # setuptools no longer being bundled with venvs from Python 3.12 -> pip install setuptools
