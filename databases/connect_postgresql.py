@@ -16,37 +16,48 @@ HOST = os.getenv("HOST")
 PORT = os.getenv("port")
 DBNAME = os.getenv("dbname")
 #%%
-
-# Connect to the database
-try:
-    connection = psycopg2.connect(
-        user=USER,
-        password=PASSWORD,
-        host=HOST,
-        port=PORT,
-        dbname=DBNAME
-    )
-    print("Connection successful!")
+def load_database_data(query="SELECT * FROM spelers;"):
+    """ Load custom query from POSTGRESQL database and return as a DataFrame. 
     
-    # Create a cursor to execute SQL queries
-    cursor = connection.cursor()
-    
-    # Example query
-    cursor.execute("SELECT NOW();")
-    result = cursor.fetchone()
-    print("Current Time:", result)
+    Parameters:
+    query (str): SQL query to execute. Default is 'SELECT * FROM spelers'.
 
-    cursor.execute("SELECT * FROM TENNIS.SPELERS;")
-    
-    spelers_data = cursor.fetchall()
-    columns = [desc[0] for desc in cursor.description]
-    spelers_df = pd.DataFrame(spelers_data, columns=columns)
+    Returns:
+    pd.DataFrame: DataFrame containing the query results.
+    """
+
+    # Connect to the database
+    try:
+        connection = psycopg2.connect(
+            user=USER,
+            password=PASSWORD,
+            host=HOST,
+            port=PORT,
+            dbname=DBNAME
+        )
+        print("Connection successful!")
+        
+        # Create a cursor to execute SQL queries
+        cursor = connection.cursor()
+        
+        # Example query
+        # cursor.execute("SELECT NOW();")
+        # result = cursor.fetchone()
+        # print("Current Time:", result)
+
+        cursor.execute(query)
+        
+        the_data = cursor.fetchall()
+        columns = [desc[0] for desc in cursor.description]
+        the_df = pd.DataFrame(the_data, columns=columns)
 
 
-    # Close the cursor and connection
-    cursor.close()
-    connection.close()
-    print("Connection closed.")
+        # Close the cursor and connection
+        cursor.close()
+        connection.close()
+        print("Connection closed.")
+        return the_df
 
-except Exception as e:
-    print(f"Failed to connect: {e}")
+    except Exception as e:
+        print(f"Failed to connect: {e}")
+        return None
