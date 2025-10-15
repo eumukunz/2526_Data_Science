@@ -6,15 +6,7 @@ import pandas as pd
 
 
 #%%
-# Load environment variables from .env
-load_dotenv()
 
-# Fetch variables
-USER = os.getenv("USER")
-PASSWORD = os.getenv("PASSWORD")
-HOST = os.getenv("HOST")
-PORT = os.getenv("port")
-DBNAME = os.getenv("dbname")
 #%%
 def load_database_data(query="SELECT * FROM spelers;"):
     """ Load custom query from POSTGRESQL database and return as a DataFrame. 
@@ -26,6 +18,15 @@ def load_database_data(query="SELECT * FROM spelers;"):
     pd.DataFrame: DataFrame containing the query results.
     """
 
+    # Load environment variables from .env
+    load_dotenv()
+
+    # Fetch variables
+    USER = os.getenv("USER")
+    PASSWORD = os.getenv("PASSWORD")
+    HOST = os.getenv("HOST")
+    PORT = os.getenv("port")
+    DBNAME = os.getenv("dbname")
     # Connect to the database
     try:
         connection = psycopg2.connect(
