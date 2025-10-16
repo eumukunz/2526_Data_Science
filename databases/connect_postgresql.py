@@ -6,8 +6,6 @@ import pandas as pd
 
 
 #%%
-
-#%%
 def load_database_data(query="SELECT * FROM spelers;"):
     """ Load custom query from POSTGRESQL database and return as a DataFrame. 
     

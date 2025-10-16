@@ -1,0 +1,9 @@
+# Data Visualization in R
+
+This document demonstrates various data visualization techniques using R and popular packages like ggplot2.
+
+```{r}
+str(penguins)
+```
+
+## Deel 1
