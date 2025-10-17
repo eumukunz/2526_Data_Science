@@ -1,0 +1,142 @@
+-- SQL-exercises pre-clean start
+
+SELECT * FROM bestuursleden;
+-- 1. Alle spelers uit Zoetermeer die lid werden van de club voor 1984;
+SELECT * 
+FROM spelers
+WHERE plaats = 'Zoetermeer'
+AND jaartoe < 1984;
+
+-- 2. Maak een lijst van alle teams waarvoor lid nr 27 de kapitein is.
+SELECT *
+FROM teams
+WHERE spelersnr = 27
+
+-- 3. Geef een overzicht van alle gewonnen tenniswedstrijden.
+SELECT *
+FROM wedstrijden --wij gaan eerst dit alleen uitvoeren om te zien hoe de tabel van wedstrijden eruit zien en van daaruit vertrekken om tot de AND query te vinden
+WHERE gewonnen > verloren;
+-- 4. Geef een overzicht van alle wedstrijden die speler 112 gespeeld heeft. 
+-- Bereken voor elke van deze wedstrijden het verchil van de gewonnen of verloren sets.
+SELECT *, abs(gewonnen - verloren) AS setsverschil --wij gaan eerst SELECT* doen zonder abs(..) om de lijst van wedstrijden van 112 
+--te vinden en dan pas een andere kolom toevoegen met setsverschil
+FROM wedstrijden
+where spelersnr = 112;
+
+-- 5. Maak een lijst van alle betaalde boetes.
+
+
+## H4 Oefening 1 - Maak een overzicht waarbij je per woonplaats aangeeft hoeveel spelers er wonen in die gemeente.Sorteer op plaats.
+
+SELECT plaats,
+       COUNT(*) AS aantal_spelers
+FROM spelers
+GROUP BY plaats
+ORDER BY plaats;
+
+## Oefening 2 Ga na hoeveel mannelijke en hoeveel vrouwelijke spelers de club telt. Zorg ervoor dat je lijst gesorteerd wordt van het grootst aantal spelers naar het kleinste aantal.
+SELECT geslacht,
+       COUNT(*) AS aantal_spelers
+FROM spelers
+GROUP BY geslacht
+ORDER BY aantal_spelers DESC;
+
+## Oefening 3 Geef een lijst met het totaalbedrag aan boetes per speler. Sorteer het hoogste totale boetebedrag bovenaan.
+
+SELECT spelersnr,
+       SUM(bedrag) AS totaal_boetes
+FROM boetes
+GROUP BY spelersnr
+ORDER BY totaal_boetes DESC, spelersnr;
+
+## Oefening 4 Geef een lijst met voor elke speler met een boete, het totaal bedrag aan boetes. Als het aantal boetes echter groter is dan 2, zet je ‘veel boetes’. Bij de andere spelers zet je een -. Sorteer op aantal boetes aflopend en daarna op totaal boetebedrag aflopend.
+
+## Oefening 5 Geef per team, waarvoor wedstrijden gespeeld zijn, het gemiddeld aantal gewonnen en verloren sets. Rond de gemiddelden af tot op twee cijfers na de komma. Sorteer op teamnr.
+
+##Oefening 6
+##Geef alle spelers die meer dan één wedstrijd gewonnen hebben.
+
+SELECT spelersnr
+FROM wedstrijden
+GROUP BY spelersnr
+
+##Oefening 7
+##Geef voor alle actieve bestuursleden die al een boete gehad hebben van meer dan 50 euro hun maximale boetebedrag. Gebruik geen DISTINCT.
+
+
+##Oefening 8 - moeilijk
+##Sorteer de teams in functie van het aantal verloren wedstrijden (oplopend). Als het aantal verloren wedstrijden gelijk is, sorteer je op het totaal aantal gewonnen sets (aflopend) en op divisienaam (oplopend). Een wedstrijd die verloren werd met 3 - 0 telt niet mee in deze output. Geef het aantal wedstrijden dat voldoet aan bovenstaande voorwaarde mee in de output.
+
+##Oefening 9
+##Geef de teams en het aantal verschillende spelers dat voor dit team gespeeld heeft. Sorteer op divisie.
+
+##Oefening 10
+##Geef de teams (het nummer van het team en de divisie) waarvoor meer dan vier verschillende spelers gespeeld hebben.
+
+##Oefening 11
+##Maak een lijst met per spelersnummer het aantal wedstrijden dat een speler verloren heeft op voorwaarde dat deze speler meer dan één wedstrijd verloren heeft. Bijkomend moet de lijst gesorteerd worden op basis van het spelersnummer.
+
+##Oefening 12
+##Geef een lijst met de spelers die ooit bestuurslid zijn geweest (of nog steeds zijn) en niet in Den Haag of Zoetermeer wonen. Bijkomend mag deze speler maximaal 2 keer in het bestuur van de club gezeteld hebben. De lijst moet aflopend gesorteerd worden op het aantal maal dat de betreffende speler in het bestuur zetelde. Mensen met hetzelfde aantal keren moeten oplopend gesorteerd worden op basis van hun spelersnr.
+
+##Oefening 13
+##Geef het gemiddeld aantal gewonnen en verloren sets per geboortejaar. Sorteer op geboortejaar.
+
+##Oefening 14
+##Geef spelers die in het jaar dat ze lid geworden zijn van de club reeds een boete van meer dan 50 euro gekregen hebben en de som van al deze boetes groter of gelijk is aan 100 euro. Geef buiten de voorletters en de naam van de speler ook het aantal boetes die aan bovenstaande voorwaarden voldoen. Sorteer op spelersnr.
+
+##Oefening 15
+##Geef het gemiddeld boetebedrag per speler, afgerond op twee cijfers na de komma. Spelers zonder boete krijgen als waarde ‘geen boetes’. Sorteer op spelersnaam.
+
+##Oefening 16
+##Geef het gemiddeld aantal gewonnen en verloren sets per geboortejaar. Rond telkens af op twee cijfers na de komma. Sorteer op geboortejaar zodat de gegevens van de jongste spelers bovenaan staan.
+
+##Oefening 17
+##Geef voor de actieve bestuursleden zonder boete hun laatste gespeelde wedstrijd (die met het hoogste wedstrijdnummer). Sorteer aflopend op spelersnr.
+
+##Oefening 18
+##Geef het hoogste wedstrijdnummer voor de teams waarvoor wedstrijden gespeeld zijn door bestuursleden (actief en niet meer actief) die geen boete hebben gekregen. Sorteer op teamnr.
+
+##Oefening 19
+##Geef alle spelers (nummer) die meer wedstrijden gespeeld hebben dan het aantal wedstrijden dat de huidige voorzitter heeft verloren. De huidige voorzitter komt zelf niet in de lijst voor. Gebruik geen subqueries. Sorteer op spelersnr.
+
+
+
+-- Oefeningen subqueries
+
+
+Oefening 8
+-- DOORDENKER:Geef de nummers van de bestuursleden die een functie zijn begonnen en diezelfde functie weer hebben neergelegd op dezelfde datums 
+-- als waarop speler 8 de functie van penningmeester heeft geaccepteerd en weer heeft neergelegd. 
+-- Speler 8 mag zelf niet in het eindresultaat voorkomen.
+
+SELECT spelersnr
+from bestuursleden
+WHERE (begin_datum,eind_datum) =
+    (SELECT begin_datum,eind_datum 
+    FROM bestuursleden  
+    WHERE functie = 'Penningmeester' AND spelersnr = 8)
+AND spelersnr != 8;
+
+-- Oefening 9 Geef de divisies van teams 1 en 2 en plaats deze naast elkaar in het resultaat
+SELECT ( SELECT divisie from teams t where teamnr = 1) team1, (SELECT divisie FROM teams t WHERE teamnr = 2) team2
+
+-- 
+-- Oefening 10
+-- Geef de nummers van de wedstrijden gespeeld door spelers die in Rijswijk wonen. Probeer met een subquery
+SELECT wedstrijdnr
+FROM wedstrijden
+WHERE spelersnr IN (SELECT spelersnr FROM spelers WHERE plaats = 'Rijswijk')
+
+
+-- Oefening 11
+-- Geef de wedstrijdnummers, spelersnummers en de teamnummers van alle wedstrijden gespeeld door 
+-- een speler die tevens de aanvoerder van dat team is. Probeer met een subquery
+
+SELECT wedstrijdnr, spelersnr, teamnr 
+FROM wedstrijden
+WHERE spelersnr IN (SELECT spelersnr FROM teams)
+
+SELECT w.wedstrijdnr, w.spelersnr, w.teamnr
+FROM wedstrijden w
+WHERE w.spelersnr IN (SELECT t.spelersnr FROM teams t WHERE t.teamnr = w.teamnr)
